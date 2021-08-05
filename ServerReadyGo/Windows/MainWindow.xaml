@@ -13,16 +13,18 @@
         </Grid.RowDefinitions>
         
         <TextBlock Text="线粒狗 ServerReadyGo" FontSize="40" Padding="10" FontWeight="Light" Grid.Row="0" Background="#FF13A9FF" Foreground="White"/>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Loaded="Grid_Loaded">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <ToolBar>
+                <Button x:Name="btnStart" Content="启动守护"/>
+                <Button x:Name="btnStop" Content="停止守护"/>
                 <Button Name="btnSettings" Content="设置"/>
             </ToolBar>
-            <Grid Grid.Row="1" Margin="30">
+            <Grid Grid.Row="1" Margin="30,10,30,30">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -41,7 +43,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Background="Orange" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
+                        <TextBlock x:Name="txbProName" Background="Orange" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
                         <TextBlock Grid.Row="1" Text="守护进程名" FontSize="20" Padding="10" FontWeight="Light" VerticalAlignment="Center"/>
                     </Grid>
 
@@ -51,7 +53,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Background="#FFFF6800" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
+                        <TextBlock x:Name="txbProID" Background="#FFFF6800" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
                         <TextBlock Grid.Row="1" Text="守护进程 PID" FontSize="20" Padding="10" FontWeight="Light" VerticalAlignment="Center"/>
                     </Grid>
 
@@ -61,7 +63,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Background="#FF1FB448" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
+                        <TextBlock x:Name="txbProStatus" Background="#FF1FB448" Text="未设置" FontSize="20" Padding="10" FontWeight="Bold" Foreground="White" Width="224"/>
                         <TextBlock Grid.Row="1" Text="守护进程状态" FontSize="20" Padding="10" FontWeight="Light" VerticalAlignment="Center"/>
                     </Grid>
                 </Grid>

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Timers;
 
 namespace ServerReadyGo
 {
@@ -23,32 +24,52 @@ namespace ServerReadyGo
     /// </summary>
     public partial class MainWindow : Window
     {
-        BackgroundWorker protector;
+        Process currentProcess;
+        Timer bgProcessChecker;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            protector = new BackgroundWorker();
-            protector.DoWork += Protector_DoWork;
-
-            protector.RunWorkerAsync(4292);
+            bgProcessChecker = new Timer();
+            bgProcessChecker.Interval = 1000;
+            bgProcessChecker.Elapsed += bgCheckProcessStatus;
         }
 
-        private void Protector_DoWork(object sender, DoWorkEventArgs e)
+        private void bgCheckProcessStatus(object sender, ElapsedEventArgs e)
         {
-            int PID = (int)e.Argument;
-            Process p = Process.GetProcessById(PID);
-
-            txbProName.Text = p.ProcessName;
-            txbProID.Text = PID.ToString();
-            txbProStatus.Text = p.HasExited ? "已终止" : "正在运行";
+            if (currentProcess.HasExited)
+            {
+                txbProStatus.Text = "正在运行";
+            }
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             DoubleAnimation ani = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(1)));
             (sender as Grid).BeginAnimation(OpacityProperty, ani);
+        }
+
+        private void SetProtectProcess(int PID)
+        {
+            Process p;
+            try
+            {
+                p = Process.GetProcessById(PID);
+            }
+            catch
+            {
+                MessageBox.Show("获取进程失败，可能是因为它不存在。", "错误", MessageBoxButton.OK);
+                return;
+            }
+            if (!p.HasExited)
+            {
+                MessageBox.Show("无法守护已终止的进程。", "错误", MessageBoxButton.OK);
+                return;
+            }
+            currentProcess = p;
+            txbProName.Text = p.ProcessName;
+            txbProID.Text = PID.ToString();
         }
     }
 }
